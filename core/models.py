@@ -32,5 +32,3 @@ class PerewalAdd(models.Model):
 class Image(models.Model):
 	image = models.ImageField(upload_to='images/')
 	perewal_added = models.ForeignKey(PerewalAdd, on_delete=models.CASCADE)
-
-

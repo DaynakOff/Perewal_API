@@ -1,5 +1,4 @@
-from django.conf import settings
-from .models import Users, Coords, PerewalAdd, Image
+from .models import Coords, PerewalAdd, Image
 
 
 class DataManager:
