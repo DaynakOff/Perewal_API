@@ -26,7 +26,7 @@ class PerewalAdd(models.Model):
 	autumn_level = models.CharField(max_length=20)
 	spring_level = models.CharField(max_length=20)
 	coords = models.ForeignKey(Coords, on_delete=models.CASCADE)
-	users = models.ForeignKey(Users, on_delete=models.CASCADE)
+	users = models.ForeignKey(Users, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Image(models.Model):

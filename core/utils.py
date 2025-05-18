@@ -1,3 +1,4 @@
+from django.utils import timezone
 from .models import Coords, PerewalAdd, Image
 
 
@@ -18,9 +19,9 @@ class DataManager:
 		perewal = PerewalAdd.objects.create(
 			title=data['title'],
 			beauty_title=data['beauty_title'],
-			other_title=data['other_title'],
-			connect=data['connect'],
-			add_time=data['add_time'],
+			other_title=data.get('other_title',''),
+			connect=data.get('connect', ''),
+			add_time=data.get('add_time', timezone.now()),
 			summer_level=data['summer_level'],
 			winter_level=data['winter_level'],
 			autumn_level=data['autumn_level'],
