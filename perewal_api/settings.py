@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'perewal_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'perewal_db',
+        'NAME': 'perewal_db_new',
         'USER': os.getenv('FSTR_DB_LOGIN'),
         'PASSWORD': os.getenv('FSTR_DB_PASS'),
         'HOST': os.getenv('FSTR_DB_HOST'),

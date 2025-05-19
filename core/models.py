@@ -4,8 +4,10 @@ from django.db import models
 
 
 class Users(models.Model):
-	full_name = models.CharField(max_length=100)
 	email = models.EmailField(unique=True)
+	family = models.CharField(max_length=100)
+	name = models.CharField(max_length=100)
+	otc = models.CharField(max_length=100)
 	phone = models.CharField(max_length=15)
 
 
@@ -15,20 +17,35 @@ class Coords(models.Model):
 	height = models.IntegerField()
 
 
+class Level(models.Model):
+	summer = models.CharField(max_length=20, blank=True)
+	winter = models.CharField(max_length=20, blank=True)
+	autumn = models.CharField(max_length=20, blank=True)
+	spring = models.CharField(max_length=20, blank=True)
+
+
 class PerewalAdd(models.Model):
-	title = models.CharField(max_length=100)
+
+	STATUS_CHOICES = [
+		('new', 'Новый'),
+		('pending', 'В обработке'),
+		('accepted', 'Принятый'),
+		('rejected', 'Отклоненный'),
+	]
+
 	beauty_title = models.CharField(max_length=100)
+	title = models.CharField(max_length=100)
 	other_title = models.CharField(max_length=100)
-	connect = models.CharField(max_length=100)
-	add_time = models.DateTimeField(auto_now_add=True)
-	summer_level = models.CharField(max_length=20)
-	winter_level = models.CharField(max_length=20)
-	autumn_level = models.CharField(max_length=20)
-	spring_level = models.CharField(max_length=20)
+	connect = models.CharField(max_length=100, blank=True, null=True)
+	add_time = models.DateTimeField()
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='new')
 	coords = models.ForeignKey(Coords, on_delete=models.CASCADE)
-	users = models.ForeignKey(Users, on_delete=models.CASCADE, null=True, blank=True)
+	user = models.ForeignKey(Users, on_delete=models.CASCADE)
+	level = models.ForeignKey(Level, on_delete=models.CASCADE)
 
 
 class Image(models.Model):
-	image = models.ImageField(upload_to='images/')
-	perewal_added = models.ForeignKey(PerewalAdd, on_delete=models.CASCADE)
+	data = models.TextField()
+	title = models.CharField(max_length=255)
+	perewal_added = models.ForeignKey(PerewalAdd, related_name='images', on_delete=models.CASCADE)
+
