@@ -20,6 +20,8 @@ from rest_framework.routers import DefaultRouter
 
 from core.views import PerewalAddViewSet, UsersViewSet
 
+from core.views import PerewalDetailView, PerewalUpdateView, PerewalsByUserView
+
 router = DefaultRouter()
 router.register('pereval', PerewalAddViewSet, basename='pereval')
 router.register('users', UsersViewSet, basename='users')
@@ -27,4 +29,7 @@ router.register('users', UsersViewSet, basename='users')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('submitData/<int:id>/', PerewalDetailView.as_view()),
+    path('submitData/<int:id>/edit/', PerewalUpdateView.as_view()),
+    path('submitData/', PerewalsByUserView.as_view()),
 ]
