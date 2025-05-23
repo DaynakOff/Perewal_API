@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Users(models.Model):
-	email = models.EmailField(unique=True)
+	email = models.EmailField()
 	family = models.CharField(max_length=100)
 	name = models.CharField(max_length=100)
 	otc = models.CharField(max_length=100)

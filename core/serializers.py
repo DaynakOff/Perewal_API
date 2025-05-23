@@ -1,5 +1,3 @@
-from unittest import registerResult
-
 from rest_framework import serializers
 from .models import Users, Coords, PerewalAdd, Image, Level
 
@@ -13,16 +11,13 @@ class UsersSerializer(serializers.ModelSerializer):
 class CoordsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Coords
-		fields = '__all__'
+		fields = ['latitude', 'longitude', 'height']
 
 
 class LevelSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Level
-		fields = '__all__'
-
-	def to_representation(self, obj):
-		return {'summer': obj.summer, 'winter': obj.winter, 'autumn': obj.autumn, 'spring': obj.spring}
+		fields = ['summer', 'winter', 'autumn', 'spring']
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -32,40 +27,27 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class PerewalAddSerializer(serializers.ModelSerializer):
-	coords = CoordsSerializer(required=False)
-	user = UsersSerializer(write_only=True)
-	images = ImageSerializer(many=True, write_only=True)
-	level = LevelSerializer(required=False, read_only=True)
+	coords = CoordsSerializer()
+	user = UsersSerializer()
+	images = ImageSerializer(many=True)
+	level = LevelSerializer(required=False)
 	connect = serializers.CharField(allow_blank=True, allow_null=True)
+	status = serializers.CharField(read_only=True)
 
 	class Meta:
 		model = PerewalAdd
-		fields = '__all__'
-
-	def validate(self, attrs):
-		result = super().validate(attrs)
-		return result
+		fields = [
+			'beauty_title', 'title', 'other_title', 'connect',
+			'add_time', 'status', 'coords', 'level', 'user', 'images'
+		]
 
 	def create(self, validated_data):
-
 		coords_data = validated_data.pop('coords', {})
 		user_data = validated_data.pop('user', {})
 		images_data = validated_data.pop('images', [])
 		level_data = validated_data.pop('level', {})
 
-		# Получаем email пользователя
-		email = user_data.get('email')
-
-		# Проверяем, существует ли пользователь с таким email
-		existing_user = Users.objects.filter(email=email).first()
-
-		if existing_user:
-			# Пользователь уже существует, используем его
-			user_obj = existing_user
-		else:
-			# Пользователя нет, создаём нового
-			user_obj = Users.objects.create(**user_data)
-
+		user_obj, _ = Users.objects.get_or_create(**user_data)
 		coords_obj = Coords.objects.create(**coords_data)
 		level_obj = Level.objects.create(**level_data)
 
