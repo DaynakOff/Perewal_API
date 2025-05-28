@@ -1,6 +1,6 @@
 import pytest
-from perewal_api.core.serializers import *
-from perewal_api.core.models import *
+from core.serializers import *
+from core.models import *
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def setup_objects():
 
 @pytest.mark.django_db
 def test_users_serializer(setup_objects):
-	user, _ = setup_objects
+	user = setup_objects[0]
 	serializer = UsersSerializer(user)
 	expected_data = {
 		'email': 'test1@test.com',

@@ -1,6 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
-from perewal_api.core.models import Users, Coords, Level, PerewalAdd
+from core.models import Users, Coords, Level, PerewalAdd
 
 
 @pytest.fixture()
